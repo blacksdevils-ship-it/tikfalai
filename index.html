@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>TikFalAi</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <style>
   :root {
     --tik-red: #fe2c55;
@@ -633,6 +634,16 @@
     `;
     particlesEl.appendChild(p);
   }
+
+  // PUSHER - Gerçek zamanlı bağlantı
+  const pusher = new Pusher('85873b881a89291cfb09', { cluster: 'eu' });
+  const channel = pusher.subscribe('tikfalai-channel');
+  channel.bind('new-reply', function(data) {
+    hideTyping();
+    addMessage(data.message, false);
+    isWaiting = false;
+    document.getElementById('sendBtn').disabled = false;
+  });
 
   // STATE
   let selectedFal = 'genel';
